@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Registration - Face Verification</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Compact Header -->
+        <header class="header-compact">
+            <div class="header-content">
+                <h1><i class="fas fa-landmark"></i> Land Registration NLCS</h1>
+                <p>Secure Face Verification for Land Ownership</p>
+            </div>
+        </header>
+
+        <!-- Main Content - Compact Layout -->
+        <main class="main-content-compact">
+            <!-- Compact Step Indicator -->
+            <div class="step-indicator-compact">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Owner</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Capture</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Verify</div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="content-grid">
+                <!-- Left Column: Camera -->
+                <div class="left-column">
+                    <div class="camera-section-compact">
+                        <div class="camera-container-compact">
+                            <video id="video" autoplay playsinline muted></video>
+                            <canvas id="canvas" style="display: none;"></canvas>
+                            <div class="camera-overlay">
+                                <div class="face-frame">
+                                    <div class="corner top-left"></div>
+                                    <div class="corner top-right"></div>
+                                    <div class="corner bottom-left"></div>
+                                    <div class="corner bottom-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Compact Camera Controls -->
+                        <div class="camera-controls-compact">
+                            <button id="startCamera" class="btn btn-primary btn-small">
+                                <i class="fas fa-camera"></i> Start
+                            </button>
+                            <button id="captureBtn" class="btn btn-success btn-small" disabled>
+                                <i class="fas fa-camera-retro"></i> Capture
+                            </button>
+                            <button id="stopCamera" class="btn btn-danger btn-small" disabled>
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                        </div>
+                        
+                        <!-- Camera Status -->
+                        <div class="camera-status-compact">
+                            <i class="fas fa-camera"></i>
+                            <span id="cameraStatus">Camera: Not Started</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Images and Verification -->
+                <div class="right-column">
+                    <!-- Compact Image Display -->
+                    <div class="image-section-compact">
+                        <div class="image-grid-compact">
+                            <div class="image-card-compact">
+                                <h4>Owner's Face (NDI)</h4>
+                                <div class="image-container-compact" id="knownImageContainer">
+                                    <div class="placeholder-compact">
+                                        <i class="fas fa-user"></i>
+                                        <p>No image</p>
+                                    </div>
+                                </div>
+                                <div class="image-actions-compact">
+                                    <button class="btn btn-outline btn-small" onclick="captureKnownFace()">
+                                        <i class="fas fa-camera"></i> Capture
+                                    </button>
+                                    <label class="btn btn-outline btn-small">
+                                        <i class="fas fa-upload"></i> Upload
+                                        <input type="file" id="knownFileInput" accept="image/*" style="display: none;">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="image-card-compact">
+                                <h4>Your Face</h4>
+                                <div class="image-container-compact" id="newImageContainer">
+                                    <div class="placeholder-compact">
+                                        <i class="fas fa-user"></i>
+                                        <p>No image</p>
+                                    </div>
+                                </div>
+                                <div class="image-actions-compact">
+                                    <button class="btn btn-outline btn-small" onclick="captureNewFace()">
+                                        <i class="fas fa-camera"></i> Capture
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compact Verification Section -->
+                    <div class="verification-section-compact">
+                        <button id="verifyBtn" class="btn btn-primary btn-large" disabled>
+                            <i class="fas fa-shield-alt"></i> Verify Faces
+                        </button>
+                        
+                        <div id="verificationResult" class="result-container-compact" style="display: none;">
+                            <div class="result-icon">
+                                <i class="fas fa-check-circle success" id="resultIcon"></i>
+                            </div>
+                            <div class="result-message" id="resultMessage"></div>
+                            <div class="result-details" id="resultDetails"></div>
+                        </div>
+                    </div>
+
+                    <!-- Compact Status Section -->
+                    <div class="status-section-compact">
+                        <div class="status-item-compact">
+                            <i class="fas fa-image"></i>
+                            <span id="knownImageStatus">Known: Not Captured</span>
+                        </div>
+                        <div class="status-item-compact">
+                            <i class="fas fa-image"></i>
+                            <span id="newImageStatus">New: Not Captured</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p id="loadingMessage">Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html> 
